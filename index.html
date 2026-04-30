@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Craig Neethling — Operations Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --paper: #f8f6f1;
+    --warm: #e8e4dc;
+    --accent: #c45d3e;
+    --accent-light: rgba(196,93,62,0.08);
+    --muted: #6b6560;
+    --card: #ffffff;
+    --divider: #ddd5cb;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 10% 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -120px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, var(--accent-light) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .hero-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.2s;
+  }
+
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.8rem, 6vw, 5.2rem);
+    line-height: 1.1;
+    font-weight: 400;
+    max-width: 700px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.4s;
+  }
+
+  .hero-sub {
+    margin-top: 28px;
+    font-size: 1.15rem;
+    color: var(--muted);
+    max-width: 560px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.6s;
+  }
+
+  .hero-meta {
+    margin-top: 48px;
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.8s;
+  }
+
+  .hero-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .hero-meta-item span:first-child {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .hero-meta-item span:last-child {
+    font-size: 0.95rem;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* ── SECTION FRAMEWORK ── */
+  section {
+    padding: 100px 10%;
+  }
+
+  .section-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 400;
+    margin-bottom: 20px;
+  }
+
+  .section-desc {
+    color: var(--muted);
+    max-width: 600px;
+    margin-bottom: 56px;
+    font-size: 1.05rem;
+  }
+
+  /* ── CASE STUDY CARDS ── */
+  .cases {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .case-card {
+    background: var(--card);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .case-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+  }
+
+  .case-header {
+    padding: 48px 48px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .case-header h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    max-width: 500px;
+  }
+
+  .case-tag {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    background: var(--accent-light);
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .case-body {
+    padding: 32px 48px 48px;
+  }
+
+  .case-context {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 36px;
+    max-width: 680px;
+  }
+
+  .case-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 28px;
+  }
+
+  .case-metric {
+    padding: 24px;
+    background: var(--paper);
+    border-radius: 12px;
+  }
+
+  .case-metric .number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    color: var(--accent);
+    line-height: 1.2;
+  }
+
+  .case-metric .label {
+    margin-top: 6px;
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .case-actions {
+    margin-top: 36px;
+    padding-top: 28px;
+    border-top: 1px solid var(--divider);
+  }
+
+  .case-actions h4 {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  .case-actions ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .case-actions li {
+    padding-left: 20px;
+    position: relative;
+    font-size: 0.92rem;
+    color: var(--ink);
+  }
+
+  .case-actions li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* ── RECOMMENDATIONS ── */
+  .recs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 32px;
+  }
+
+  .rec-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .rec-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+  }
+
+  .rec-card::before {
+    content: '\201C';
+    font-family: 'DM Serif Display', serif;
+    font-size: 5rem;
+    line-height: 1;
+    color: var(--accent);
+    opacity: 0.12;
+    position: absolute;
+    top: 16px;
+    left: 28px;
+    pointer-events: none;
+  }
+
+  .rec-quote {
+    font-size: 0.95rem;
+    color: var(--ink);
+    line-height: 1.75;
+    flex: 1;
+    position: relative;
+    z-index: 1;
+  }
+
+  .rec-author {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--divider);
+  }
+
+  .rec-photo {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: var(--warm);
+  }
+
+  .rec-name {
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: var(--ink);
+  }
+
+  .rec-role {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  @media (max-width: 768px) {
+    .recs-grid {
+      grid-template-columns: 1fr;
+    }
+    .rec-card {
+      padding: 28px;
+    }
+  }
+
+  /* ── SKILLS STRIP ── */
+  .skills-section {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .skills-section .section-label { color: var(--accent); }
+  .skills-section .section-desc { color: rgba(248,246,241,0.6); }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+  }
+
+  .skill-card {
+    padding: 32px;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    transition: border-color 0.3s ease, background 0.3s ease;
+  }
+
+  .skill-card:hover {
+    border-color: var(--accent);
+    background: rgba(255,255,255,0.03);
+  }
+
+  .skill-card h4 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    margin-bottom: 10px;
+  }
+
+  .skill-card p {
+    font-size: 0.85rem;
+    color: rgba(248,246,241,0.55);
+    line-height: 1.6;
+  }
+
+  /* ── CONTACT ── */
+  .contact {
+    text-align: center;
+    padding: 100px 10%;
+  }
+
+  .contact .section-title { margin-bottom: 12px; }
+
+  .contact-links {
+    margin-top: 32px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    border-radius: 100px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--ink);
+    background: var(--card);
+    border: 1px solid var(--divider);
+    transition: all 0.25s ease;
+  }
+
+  .contact-link:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+
+  .contact-link.primary {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+
+  .contact-link.primary:hover {
+    background: #b0512f;
+    color: #fff;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .hero { padding: 60px 6% 40px; min-height: 70vh; }
+    section { padding: 64px 6%; }
+    .case-header, .case-body { padding-left: 28px; padding-right: 28px; }
+    .case-header { padding-top: 32px; }
+    .case-body { padding-bottom: 32px; }
+    .hero-meta { gap: 24px; }
+    .contact { padding: 64px 6%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════ HERO ════ -->
+<header class="hero">
+  <div class="hero-label">Operations Portfolio</div>
+  <h1>Craig Neethling</h1>
+  <p class="hero-sub">Senior operations leader specialising in scalable systems, cross-functional alignment, and measurable business outcomes. 7+ years driving efficiency across SaaS and multi-site environments.</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <span>Based In</span>
+      <span>Valencia, Spain</span>
+    </div>
+    <div class="hero-meta-item">
+      <span>Specialisation</span>
+      <span>Operations &amp; RevOps</span>
+    </div>
+    <div class="hero-meta-item">
+      <span>Experience</span>
+      <span>7+ Years</span>
+    </div>
+    <div class="hero-meta-item">
+      <span>Languages</span>
+      <span>English &amp; Spanish</span>
+    </div>
+  </div>
+</header>
+
+<!-- ════ CASE STUDIES ════ -->
+<section>
+  <div class="section-label">Case Studies</div>
+  <h2 class="section-title">Selected Work</h2>
+  <p class="section-desc">A look at key projects where I designed operational systems, improved team performance, and delivered measurable results.</p>
+
+  <div class="cases">
+
+    <!-- CASE 1 -->
+    <div class="case-card reveal">
+      <div class="case-header">
+        <h3>Scaling Revenue Operations Across Four Departments</h3>
+        <span class="case-tag">RevOps &amp; Strategy</span>
+      </div>
+      <div class="case-body">
+        <p class="case-context"><strong>Insense (TikTok &amp; Meta Partner)</strong> — As RevOps Lead, I was tasked with unifying operational strategy across Sales, Marketing, Customer Success, and Finance at a fast-growing SaaS company. The challenge: siloed systems, inconsistent data, and manual workflows slowing down growth.</p>
+        <div class="case-grid">
+          <div class="case-metric">
+            <div class="number">30–40%</div>
+            <div class="label">Reduction in manual admin workload across teams</div>
+          </div>
+          <div class="case-metric">
+            <div class="number">50%</div>
+            <div class="label">Faster executive reporting through automated dashboards</div>
+          </div>
+          <div class="case-metric">
+            <div class="number">$15–20K</div>
+            <div class="label">Average contract value managed through deal desk</div>
+          </div>
+          <div class="case-metric">
+            <div class="number">30%</div>
+            <div class="label">Improvement in data completeness &amp; governance</div>
+          </div>
+        </div>
+        <div class="case-actions">
+          <h4>What I Did</h4>
+          <ul>
+            <li>Centralised operational systems and data across four departments, eliminating silos and improving cross-functional visibility</li>
+            <li>Designed automated workflows and operational policies that freed teams from repetitive admin tasks</li>
+            <li>Built executive dashboards covering MRR, churn, conversion, and forecasting for data-driven leadership decisions</li>
+            <li>Owned deal desk and contract negotiation, standardising commercial processes and improving turnaround times</li>
+            <li>Partnered with senior leadership on budget compilation, strategic planning, and growth strategy execution</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASE 2 -->
+    <div class="case-card reveal">
+      <div class="case-header">
+        <h3>Rebuilding Lead Management &amp; Conversion Frameworks</h3>
+        <span class="case-tag">Process Optimisation</span>
+      </div>
+      <div class="case-body">
+        <p class="case-context"><strong>Insense</strong> — Conversion rates were underperforming due to unclear lead qualification criteria and fragmented handoff processes. I was brought in to redesign the lead lifecycle from first touch through to closed-won.</p>
+        <div class="case-grid">
+          <div class="case-metric">
+            <div class="number">15–20%</div>
+            <div class="label">Increase in lead-to-customer conversion rates</div>
+          </div>
+          <div class="case-metric">
+            <div class="number">20–30%</div>
+            <div class="label">Reduction in manual admin time for frontline teams</div>
+          </div>
+        </div>
+        <div class="case-actions">
+          <h4>What I Did</h4>
+          <ul>
+            <li>Rebuilt lead qualification frameworks with clear scoring criteria and stage definitions</li>
+            <li>Developed data governance standards including mandatory fields and naming conventions</li>
+            <li>Designed lifecycle reporting dashboards tracking renewals, expansion, churn, and customer health</li>
+            <li>Identified and implemented workflow automations to reduce process inefficiencies end-to-end</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASE 3 -->
+    <div class="case-card reveal">
+      <div class="case-header">
+        <h3>Transforming Customer Support Operations &amp; SLA Performance</h3>
+        <span class="case-tag">CS Operations</span>
+      </div>
+      <div class="case-body">
+        <p class="case-context"><strong>Insense</strong> — Customer support was struggling with inconsistent SLA adherence and high ticket volume. I overhauled the entire support operations workflow, from ticket routing to self-service resources.</p>
+        <div class="case-grid">
+          <div class="case-metric">
+            <div class="number">70% → 90%+</div>
+            <div class="label">SLA adherence improvement</div>
+          </div>
+          <div class="case-metric">
+            <div class="number">25%</div>
+            <div class="label">Reduction in average resolution time</div>
+          </div>
+          <div class="case-metric">
+            <div class="number">15–20%</div>
+            <div class="label">Team capacity freed up through automation</div>
+          </div>
+        </div>
+        <div class="case-actions">
+          <h4>What I Did</h4>
+          <ul>
+            <li>Streamlined ticketing workflows with improved routing, prioritisation, and escalation paths</li>
+            <li>Formalised post-sale handoff processes with Sales, reducing onboarding friction and improving early engagement</li>
+            <li>Built health scoring and retention reporting to enable data-informed operational decisions</li>
+            <li>Led documentation and Help Center initiatives, reducing repetitive inbound tickets through self-service adoption</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASE 4 -->
+    <div class="case-card reveal">
+      <div class="case-header">
+        <h3>Multi-Site Operational Leadership in Hospitality</h3>
+        <span class="case-tag">General Management</span>
+      </div>
+      <div class="case-body">
+        <p class="case-context"><strong>Hospitality &amp; Multi-Site Environments (2017–2021)</strong> — Held senior leadership roles overseeing end-to-end commercial performance, workforce management, and operational excellence across multiple locations.</p>
+        <div class="case-grid">
+          <div class="case-metric">
+            <div class="number">40+</div>
+            <div class="label">Staff managed across cross-functional teams</div>
+          </div>
+          <div class="case-metric">
+            <div class="number">Full P&amp;L</div>
+            <div class="label">Revenue forecasting, budgeting &amp; cost control</div>
+          </div>
+        </div>
+        <div class="case-actions">
+          <h4>What I Did</h4>
+          <ul>
+            <li>Directed hiring, scheduling, performance appraisals, and professional development for teams of 40+</li>
+            <li>Owned full P&amp;L with responsibility for revenue forecasting, cash flow management, and cost control</li>
+            <li>Negotiated vendor and agency contracts ensuring compliance and favourable commercial terms</li>
+            <li>Implemented POS and property management systems, standardising operations across multiple sites</li>
+            <li>Built a high-morale workplace culture, reducing staff turnover and improving service delivery</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════ RECOMMENDATIONS ════ -->
+<section>
+  <div class="section-label">Recommendations</div>
+  <h2 class="section-title">What Colleagues Say</h2>
+  <p class="section-desc">Selected recommendations from people I've worked closely with.</p>
+
+  <div class="recs-grid">
+
+    <div class="rec-card reveal">
+      <p class="rec-quote">"I honestly wish every team had someone like Craig. We grew our agency's revenue 2.5x in a year, and Craig was a huge part of making that happen. He has this ability to bring order to chaos, by fixing broken processes, organizing budgets, or helping a fast-moving marketing team actually stay on track. His work truly has a direct and measurable impact on business performance. And he's always a few steps ahead. A lot of the time, by the time you notice something could become a problem, Craig has already spotted it and quietly fixed it. On a personal level, he is one of the most trustworthy collaborators I've worked with, and his sense of humor has made my day several times. If you have a chance to work with him, take it."</p>
+      <div class="rec-author">
+        <img class="rec-photo" src="mara_photo.png" alt="Mara Bustamante">
+        <div>
+          <div class="rec-name">Mara Bustamante</div>
+          <div class="rec-role">Digital Marketing Strategies &amp; Project Management</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rec-card reveal">
+      <p class="rec-quote">"I worked with Craig during my time at Insense and I can say he is one of those rare professionals who can take a complex problem and distill it into a clear, actionable solution. I've seen him tackle all sorts of issues with a level of precision and creativity that is truly impressive. He is reliable, incredibly knowledgeable in his field, and always goes above and beyond to ensure the final output is of the highest quality. He is as much a mentor as he is a colleague, and I'm confident that he will continue to make a significant impact wherever he goes!"</p>
+      <div class="rec-author">
+        <img class="rec-photo" src="manuel_photo.png" alt="Manuel Sheen Alay">
+        <div>
+          <div class="rec-name">Manuel Sheen Alay</div>
+          <div class="rec-role">AI Growth Ops Manager · AirOps</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rec-card reveal">
+      <p class="rec-quote">"I had the pleasure of working alongside Craig for nearly a year as CX and RevOps Leads, and I can confidently say he is one of the most committed professionals I've had the chance to collaborate with. He consistently goes beyond his role: proactively identifying areas for improvement and translating them into real business results. On top of being incredibly reliable and detail-oriented, he's always genuinely willing to lend a hand, no matter how busy things get. And if that wasn't enough, his sense of humor makes him the kind of teammate who lifts the whole team's energy. Any organization would be lucky to have him."</p>
+      <div class="rec-author">
+        <img class="rec-photo" src="svetlana_photo.png" alt="Svetlana Emetc">
+        <div>
+          <div class="rec-name">Svetlana Emetc</div>
+          <div class="rec-role">Ecommerce Content &amp; Influencer Marketing</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rec-card reveal">
+      <p class="rec-quote">"I worked with Craig for almost four years in the tech/agency space, where I got to see him grow in different roles. He is one of those people you can always go to when you have a problem, he will step in, help you, and find a solution with you. He's truly the person everyone goes to when something comes up. From a professional side, I saw him do really well in different roles, from Customer Service to RevOps. In every role, he did an amazing job. He takes ownership of his work and naturally becomes someone the team relies on, especially when things get challenging. He's also great at building workflows, managing projects, and organizing things in a way that makes everyone's job easier. I can't recommend him enough, and I'm sure he will make a big impact wherever he goes."</p>
+      <div class="rec-author">
+        <img class="rec-photo" src="maria_paula_photo.png" alt="Maria Paula Dominguez Gutierrez">
+        <div>
+          <div class="rec-name">Maria Paula Dominguez Gutierrez</div>
+          <div class="rec-role">Influencer Marketing Expert · Insense</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rec-card reveal">
+      <p class="rec-quote">"I've had the chance to work with Craig across two very different chapters of my career, from the hospitality world to Tech (Insense), and his impact has been consistent in the best way. Early on, he taught me a lot of what I still carry with me today. Not just in terms of work ethic, but in how to approach problems, people, and responsibility. At Insense, as Head of Revenue and Customer Operations, he was the kind of operator everyone hopes to have on their team but rarely does. He built systems, workflows, and structure that made everything run smoother, often behind the scenes, but with massive impact. Beyond that, he's incredibly committed, loyal, and fully dedicated to whatever he takes on. I'd work with him again in a heartbeat!"</p>
+      <div class="rec-author">
+        <img class="rec-photo" src="thiago_photo.png" alt="Thiago Nogueira">
+        <div>
+          <div class="rec-name">Thiago Nogueira</div>
+          <div class="rec-role">Creative Director · Insense</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rec-card reveal">
+      <p class="rec-quote">"Craig is a top-tier professional. I had the opportunity to work with him for nearly two years, and I can confidently say he is one of the best professionals I've worked with. He consistently demonstrates excellence in data analysis, automation, and strategic decision-making. Craig brings a combination of technical expertise, business and human touch, allowing him to not only solve problems but also drive meaningful impact."</p>
+      <div class="rec-author">
+        <img class="rec-photo" src="felipe_photo.png" alt="Felipe Legnane">
+        <div>
+          <div class="rec-name">Felipe Legnane</div>
+          <div class="rec-role">Sales Manager · SaaS &amp; B2B</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rec-card reveal">
+      <p class="rec-quote">"Worked with Craig for two years, happy to recommend him any day. He's professional, precise, genuinely cares about what he does. Two things set him apart. First, he's creative and great to collaborate with – the kind of person who makes work better just by being there. Second, he has no problem about rolling up his sleeves. Operational grind, messy details, stuff nobody wants to touch – he just handles it if it's needed. You want him on your team."</p>
+      <div class="rec-author">
+        <img class="rec-photo" src="vasily_photo.png" alt="Vasily Makeev">
+        <div>
+          <div class="rec-name">Vasily Makeev</div>
+          <div class="rec-role">Senior Product Manager · Insense</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rec-card reveal">
+      <p class="rec-quote">"I worked alongside Craig from the very start of my career at Insense, and he's one of those people you notice immediately. He combines sharp thinking with execution and consistently delivers real impact. No matter the challenge, he ALWAYS finds a way to solve it. You can rely on him to bring clarity to complex situations, build systems that actually work, and push things forward in a way that benefits everyone involved. You can see how much people trust him, and it's very deserved! If you have the chance to work with Craig, take it!"</p>
+      <div class="rec-author">
+        <img class="rec-photo" src="irina_photo.png" alt="Irina Partas">
+        <div>
+          <div class="rec-name">Irina Partas</div>
+          <div class="rec-role">Creators Lead · Insense</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════ SKILLS ════ -->
+<section class="skills-section">
+  <div class="section-label">Capabilities</div>
+  <h2 class="section-title">What I Bring</h2>
+  <p class="section-desc">Core operational competencies refined across SaaS, RevOps, and multi-site environments.</p>
+
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <h4>Strategic Planning</h4>
+      <p>Translating company objectives into operational roadmaps with clear KPIs and execution plans.</p>
+    </div>
+    <div class="skill-card reveal">
+      <h4>Process Design &amp; Automation</h4>
+      <p>Building scalable workflows that eliminate manual bottlenecks and free teams for higher-value work.</p>
+    </div>
+    <div class="skill-card reveal">
+      <h4>P&amp;L &amp; Budget Ownership</h4>
+      <p>Full financial accountability — forecasting, cost control, and data-driven resource allocation.</p>
+    </div>
+    <div class="skill-card reveal">
+      <h4>Cross-Functional Leadership</h4>
+      <p>Aligning Sales, CS, Marketing, and Finance around shared goals and operational best practices.</p>
+    </div>
+    <div class="skill-card reveal">
+      <h4>Data &amp; Reporting</h4>
+      <p>Designing dashboards and governance frameworks that turn raw data into executive-ready insights.</p>
+    </div>
+    <div class="skill-card reveal">
+      <h4>Technology &amp; Systems</h4>
+      <p>Evaluating, implementing, and integrating tools — HubSpot, Salesforce, POS, and custom solutions.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════ CONTACT ════ -->
+<section class="contact">
+  <div class="section-label">Get In Touch</div>
+  <h2 class="section-title">Let's Talk</h2>
+  <p class="section-desc" style="margin-left:auto;margin-right:auto;">Available for full-time roles. Based in Valencia, Spain (CET) with experience working EST core hours and across multiple time zones.</p>
+  <div class="contact-links">
+    <a href="mailto:neethlingcraig@gmail.com" class="contact-link primary">neethlingcraig@gmail.com</a>
+    <a href="https://linkedin.com/in/craigneethling" class="contact-link" target="_blank">LinkedIn Profile</a>
+  </div>
+</section>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
